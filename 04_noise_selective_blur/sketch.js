@@ -33,7 +33,7 @@ let noiseResult;
 let noiseField;
 
 function preload(){
-  skull = loadImage("assets/skull3.png");
+  skull = loadImage("assets/skull4.png");
   face = loadImage("assets/face2.jpg");
   noiseThresholdShader = loadShader('assets/noiseThreshold.vert', 'assets/noiseThreshold.frag');
   blurH = loadShader('assets/blur.vert', 'assets/blur.frag');
