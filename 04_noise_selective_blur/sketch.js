@@ -84,7 +84,7 @@ function draw() {
   theShader.setUniform('tex0', skull);
   theShader.setUniform('tex1', face);
   theShader.setUniform('texNoise', noiseField);
-  theShader.setUniform('iTime', millis()/1000 * 3);
+//  theShader.setUniform('iTime', (millis()/1000 + 100) * 3);
   theShader.setUniform('threshold',thresh );
   //  console.log(thresh);
   noiseResult.shader(theShader);
@@ -149,7 +149,7 @@ function createNoiseMap(){
 
   noiseFieldShader.setUniform("iResolution", [width, height]);
   noiseFieldShader.setUniform("iFrame", frameCount);
-  noiseFieldShader.setUniform('iTime', millis()/1000 * 3);
+  noiseFieldShader.setUniform('iTime', (millis()/1000+100) * 3);
 
   noiseField.shader(noiseFieldShader);
 
