@@ -47,6 +47,8 @@ function setup() {
   calculateDimensions();
   createCanvas(canvasWidth, canvasHeight, WEBGL);
 
+  pixelDensity(1);
+
   pass1 = createGraphics(canvasWidth, canvasHeight, WEBGL);
   pass2 = createGraphics(canvasWidth, canvasHeight, WEBGL);
 
@@ -58,6 +60,11 @@ function setup() {
   pass2.noStroke();
   noiseResult.noStroke();
   noiseField.noStroke();
+
+  pass1.pixelDensity(1);
+  pass2.pixelDensity(1);
+  noiseResult.pixelDensity(1);
+  noiseField.pixelDensity(1);
 }
 
 function draw() {
