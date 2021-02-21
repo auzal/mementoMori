@@ -145,6 +145,6 @@ function createNoiseMap(){
   noiseFieldShader.setUniform('iTime', (millis()/1000+100) * 3);
   noiseField.shader(noiseFieldShader);
   noiseField.rect(0,0,noiseField.width,noiseField.height);
-  //imageMode(CENTER);
-  // image(noiseField,0,0);
+////  imageMode(CENTER);
+//   image(noiseField,0,0);
 }

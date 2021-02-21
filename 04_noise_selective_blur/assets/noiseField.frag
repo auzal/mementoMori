@@ -7,16 +7,14 @@ uniform vec2 iResolution;
 uniform int iFrame;
 uniform float iTime;
 
+#define MOD3 vec3(.1031,.11369,.13787)
+
 /* discontinuous pseudorandom uniformly distributed in [-0.5, +0.5]^3 */
-vec3 random3(vec3 c) {
-  float j = 4096.0*sin(dot(c,vec3(17.0, 59.4, 15.0)));
-  vec3 r;
-  r.z = fract(512.0*j);
-  j *= .125;
-  r.x = fract(512.0*j);
-  j *= .125;
-  r.y = fract(512.0*j);
-  return r-0.5;
+vec3 random3(vec3 p3)
+{
+	p3 = fract(p3 * MOD3);
+    p3 += dot(p3, p3.yxz+19.19);
+    return -1.0 + 2.0 * fract(vec3((p3.x + p3.y)*p3.z, (p3.x+p3.z)*p3.y, (p3.y+p3.z)*p3.x));
 }
 
 /* skew constants for 3d simplex functions */
