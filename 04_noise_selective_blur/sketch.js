@@ -15,9 +15,11 @@ let noiseFieldShader;
 
 //PShader blur;
 
-let theShader;
+let noiseThresholdShader;
 
 let blur_amt = 0.5;
+
+let thresh = 0.5;
 
 let blurSigma = 2;
 let blurSize = 3;
@@ -33,7 +35,7 @@ let noiseField;
 function preload(){
   skull = loadImage("assets/skull3.png");
   face = loadImage("assets/face2.jpg");
-  theShader = loadShader('assets/noise.vert', 'assets/noise.frag');
+  noiseThresholdShader = loadShader('assets/noiseThreshold.vert', 'assets/noiseThreshold.frag');
   blurH = loadShader('assets/blur.vert', 'assets/blur.frag');
   blurV = loadShader('assets/blur.vert', 'assets/blur.frag');
   noiseFieldShader = loadShader('assets/noiseField.vert', 'assets/noiseField.frag');
@@ -45,6 +47,8 @@ function setup() {
   imageHeight = face.height;
 
   let density = displayDensity();
+
+  density = 1;
 
   calculateDimensions();
   createCanvas(canvasWidth, canvasHeight, WEBGL);
@@ -73,30 +77,45 @@ function draw() {
 
   createNoiseMap();
 
-
-
   let maxDistance = width/2;
-  let thresh = map(dist(mouseX,mouseY,width/2, height/2),0,maxDistance,0.3,0.8);
-
+  thresh = map(dist(mouseX,mouseY,width/2, height/2),0,maxDistance,0.3,0.8);
   thresh = constrain(thresh,0.3,0.8);
 
-  theShader.setUniform("iResolution", [width, height]);
-  theShader.setUniform("iFrame", frameCount);
-  //  theShader.setUniform("iMouse", [mouseX, map(mouseY, 0, height, height, 0)]);
-  theShader.setUniform('tex0', skull);
-  theShader.setUniform('tex1', face);
-  theShader.setUniform('texNoise', noiseField);
-//  theShader.setUniform('iTime', (millis()/1000 + 100) * 3);
-  theShader.setUniform('threshold',thresh );
-  //  console.log(thresh);
-  noiseResult.shader(theShader);
-  noiseResult.rect(0,0,width,height);
-//  imageMode(CENTER);
-//  image(noiseResult,0,0);
-
-
+  createThresholdImage();
 
   blur_amt = 1;
+
+  addBlur();
+
+  imageMode(CENTER);
+  image(pass2, 0,0, width, height);
+}
+
+function calculateDimensions(){
+
+  canvasWidth = imageWidth;
+  canvasHeight = imageHeight;
+  if(windowHeight < imageHeight){
+    canvasHeight = windowHeight;
+    canvasWidth  = int(imageWidth * canvasHeight / imageHeight);
+  }
+}
+
+function createThresholdImage(){
+
+  noiseThresholdShader.setUniform("iResolution", [width, height]);
+  noiseThresholdShader.setUniform("iFrame", frameCount);
+  noiseThresholdShader.setUniform('tex0', skull);
+  noiseThresholdShader.setUniform('tex1', face);
+  noiseThresholdShader.setUniform('texNoise', noiseField);
+  noiseThresholdShader.setUniform('threshold',thresh );
+  noiseResult.shader(noiseThresholdShader);
+  noiseResult.rect(0,0,width,height);
+  //  imageMode(CENTER);
+  //  image(noiseResult,0,0);
+}
+
+function addBlur(){
   pass1.shader(blurH);
 
   blurH.setUniform('texNoise', noiseField);
@@ -117,47 +136,15 @@ function draw() {
   blurV.setUniform('direction', [0.0, 1.0]);
   pass2.rect(0,0,width, height);
 
-  imageMode(CENTER);
-  image(pass2, 0,0, width, height);
+
 }
-
-function calculateDimensions(){
-
-  canvasWidth = imageWidth;
-  canvasHeight = imageHeight;
-  if(windowHeight < imageHeight){
-    canvasHeight = windowHeight;
-    canvasWidth  = int(imageWidth * canvasHeight / imageHeight);
-  }
-}
-
-// function windowResized() {
-//   calculateDimensions();
-//   resizeCanvas(canvasWidth, canvasHeight);
-//
-//   pass1 = createGraphics(canvasWidth, canvasHeight, WEBGL);
-//   pass2 = createGraphics(canvasWidth, canvasHeight, WEBGL);
-//   noiseResult = createGraphics(canvasWidth, canvasHeight, WEBGL);
-//   noiseField = createGraphics(canvasWidth, canvasHeight, WEBGL);
-//
-//   pass1.noStroke();
-//   pass2.noStroke();
-//   noiseResult.noStroke();
-//   noiseField.noStroke();
-//
-// }
 
 function createNoiseMap(){
-
   noiseFieldShader.setUniform("iResolution", [width, height]);
   noiseFieldShader.setUniform("iFrame", frameCount);
   noiseFieldShader.setUniform('iTime', (millis()/1000+100) * 3);
-
   noiseField.shader(noiseFieldShader);
-
-  noiseField.rect(0,0,width,height);
-
-//  imageMode(CENTER);
-//  image(noiseField,0,0);
-
+  noiseField.rect(0,0,noiseField.width,noiseField.height);
+  //imageMode(CENTER);
+  // image(noiseField,0,0);
 }
