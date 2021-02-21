@@ -44,10 +44,12 @@ function setup() {
   imageWidth = face.width;
   imageHeight = face.height;
 
+  let density = displayDensity();
+
   calculateDimensions();
   createCanvas(canvasWidth, canvasHeight, WEBGL);
 
-  pixelDensity(1);
+  pixelDensity(density);
 
   pass1 = createGraphics(canvasWidth, canvasHeight, WEBGL);
   pass2 = createGraphics(canvasWidth, canvasHeight, WEBGL);
@@ -61,10 +63,10 @@ function setup() {
   noiseResult.noStroke();
   noiseField.noStroke();
 
-  pass1.pixelDensity(1);
-  pass2.pixelDensity(1);
-  noiseResult.pixelDensity(1);
-  noiseField.pixelDensity(1);
+  pass1.pixelDensity(density);
+  pass2.pixelDensity(density);
+  noiseResult.pixelDensity(density);
+  noiseField.pixelDensity(density);
 }
 
 function draw() {
