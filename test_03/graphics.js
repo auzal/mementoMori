@@ -22,7 +22,7 @@ function renderFirstRing(xTranslate, steps){
     clockImage.push();
     let skullIndex = 2;
     clockImage.scale(modelScales[skullIndex]);
-    clockImage.rotateY((millis()/1000.0 * 0.5) + radians(currentAngle));
+    clockImage.rotateY((millis()/1000.0 * 0.5));
     //clockImage.rotateZ(millis()/1000.0);
     clockImage.model(models[skullIndex]);
     clockImage.pop();
