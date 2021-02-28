@@ -9,3 +9,5 @@ running @ https://auzal.github.io/mementoMori/
 
 [memento mori first test/](test_01/)
 
+[memento mori better version/](test_03/)
+
