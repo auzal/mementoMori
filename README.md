@@ -11,3 +11,5 @@ running @ https://auzal.github.io/mementoMori/
 
 [memento mori better version/](test_03/)
 
+[memento mori final version/](final_project/)
+
